@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body{
+    font-family: 'Rubik', sans-serif;
+    background: #eef0f4;
+}
+
+input{
+    color: #432000;
+    background: #dce1eb;
+}
+
+button{
+    color: #fdfdfd;
+    background: #ac485a;
+}
