@@ -4,6 +4,7 @@ import {
   ref,
   push,
   onValue,
+  remove
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 const appSetttings = {
@@ -15,25 +16,27 @@ const database = getDatabase(app);
 const shoppingInDB = ref(database, "Shopping List");
 
 onValue(shoppingInDB, function (snapshot) {
-//   let ItemsArray = Object.values(snapshot.val());
-//   let ItemsArrayId = Object.keys(snapshot.val());
 
+  if(snapshot.exists()){
 
   let ItemsArray = Object.entries(snapshot.val());
-
 
   clearShoppingList();
   emptyField();
   for (let i = 0; i < ItemsArray.length; i++) {
     let currentItems = ItemsArray[i];
+    let currentItemID = currentItems[0];
+    let currentItemsValue = currentItems[1];
 
-let currentItemID = currentItems[0];
-let currentItemsValue = currentItems[1]
-
-   let itemValue   = newItems(  ItemsArray );
-
+    let itemValue = newItems(currentItems);
   }
+}
+else {
+  shoppingList.innerHTML = 'No items here yet...'
+}
 });
+
+
 
 const inputfield = document.getElementById("input-field");
 const addButtonEl = document.getElementById("add-button");
@@ -55,14 +58,19 @@ function emptyField() {
 }
 
 function newItems(Items) {
-//   shoppingList.innerHTML += `<li>${itemValue}</>`;
-let ItemID = Items[0];
-let ItemsValue = Items[1];
+  //   shoppingList.innerHTML += `<li>${itemValue}</>`;
+  let ItemID = Items[0];
+  let ItemsValue = Items[1];
 
-    let newEl = document.createElement('li');
+  let newEl = document.createElement("li");
 
-    newEl.textContent = ItemID
+  newEl.textContent = ItemsValue;
 
-    shoppingList.appendChild(newEl);
+  let exactLocation = ref(database, `Shopping List/${ItemID}`)
 
+  newEl.addEventListener("click", function(){
+    remove(exactLocation);
+  });
+
+  shoppingList.appendChild(newEl);
 }
