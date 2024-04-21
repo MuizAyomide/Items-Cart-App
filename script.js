@@ -37,7 +37,7 @@ else {
 });
 
 
-
+////call an input field
 const inputfield = document.getElementById("input-field");
 const addButtonEl = document.getElementById("add-button");
 const shoppingList = document.getElementById("shopping-list");
